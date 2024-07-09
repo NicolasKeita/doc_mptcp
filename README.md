@@ -3,21 +3,46 @@
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Project Objectives](#project-objectives)
-3. [System Architecture](#system-architecture)
-4. [Hardware and Software Requirements](#hardware-and-software-requirements)
-5. [Implementation Details](#implementation-details)
+2. [Advantages of MPTCP](#advantages-of-mptcp)
+3. [Project Objectives](#project-objectives)
+4. [System Architecture](#system-architecture)
+5. [Hardware and Software Requirements](#hardware-and-software-requirements)
+6. [Implementation Details](#implementation-details)
    1. [Hardware Setup](#hardware-setup)
-   2. [MPTCP Installation](#mptcp-installation)
+   2. [OpenMPTCP Installation](#openmptcp-installation)
    3. [GPS Application Development](#gps-application-development)
    4. [Data Transmission via MPTCP](#data-transmission-via-mptcp)
-6. [Deployment and Testing](#deployment-and-testing)
-7. [Performance Analysis and Optimization](#performance-analysis-and-optimization)
-8. [Resources and References](#resources-and-references)
+7. [Deployment and Testing](#deployment-and-testing)
+8. [Performance Analysis and Optimization](#performance-analysis-and-optimization)
+9. [Resources and References](#resources-and-references)
 
 ## Introduction
 
 This document details the design for an embedded system project utilizing MultiPath TCP (MPTCP) to transmit the GPS position of a vehicle in real-time. MPTCP enhances the reliability and continuity of data transmission by using multiple network paths. Specifically, we will use the OpenMPTCP implementation of MPTCP for this project.
+
+## Advantages of MPTCP
+
+Implementing MPTCP in this project provides several key advantages over traditional single-path TCP:
+
+1. **Increased Reliability:**
+   - MPTCP allows the use of multiple network interfaces simultaneously, ensuring that if one path fails (e.g., loss of 4G signal), others (e.g., Wi-Fi) can continue to transmit data, maintaining continuous communication.
+
+2. **Better Resource Utilization:**
+   - By aggregating bandwidth across multiple paths, MPTCP can utilize all available network resources, resulting in potentially higher throughput and more efficient data transmission.
+
+3. **Seamless Mobility:**
+   - For a vehicle constantly moving and switching between different network coverages, MPTCP provides seamless handover capabilities, allowing ongoing sessions to continue without interruption.
+
+4. **Load Balancing and Traffic Management:**
+   - MPTCP dynamically balances the load across multiple connections, optimizing the use of available networks and reducing the likelihood of any single path becoming a bottleneck.
+
+5. **Resilience to Network Variability:**
+   - MPTCP adapts to varying network conditions in real-time, rerouting traffic as needed to maintain optimal performance, which is crucial for mobile environments where signal strength and availability can fluctuate.
+
+6. **Enhanced Security:**
+   - Spreading data across multiple paths can enhance security as it reduces the risk of interception or data loss associated with any single path being compromised.
+
+These advantages make MPTCP particularly well-suited for the challenges of transmitting GPS data from vehicles, where maintaining consistent and reliable communication is critical.
 
 ## Project Objectives
 
@@ -63,7 +88,7 @@ This document details the design for an embedded system project utilizing MultiP
 
 ### Software
 
-- **Operating System:** Linux distribution compatible with MPTCP (e.g., Raspbian with OpenMPTCP support).
+- **Operating System:** Linux distribution compatible with OpenMPTCP (e.g., Raspbian with OpenMPTCP support).
 - **GPS Software:** `gpsd` and associated libraries.
 - **Development Tools:** Python, C, or other programming languages.
 - **Receiving Server:** HTTP or TCP server to receive GPS data.
@@ -73,21 +98,21 @@ This document details the design for an embedded system project utilizing MultiP
 ### Hardware Setup
 
 1. **Operating System Installation:**
-   - Download and install a Linux distribution on the development board that supports MPTCP, such as Raspbian with OpenMPTCP enhancements.
+   - Download and install a Linux distribution on the development board that supports OpenMPTCP.
 
 2. **Peripheral Connections:**
    - Connect the GPS module to the board via UART or USB.
    - Configure multiple network interfaces (4G/5G modems, Wi-Fi, Ethernet).
 
-### MPTCP Installation
+### OpenMPTCP Installation
 
 1. **Download and Compilation:**
-   - Obtain the OpenMPTCP version of the Linux kernel, which provides enhanced support for MPTCP features.
+   - Obtain the OpenMPTCP version of the Linux kernel, which includes MPTCP support.
    - Compile and install this kernel on the development board.
 
-2. **MPTCP Configuration:**
-   - Enable MPTCP in the network configuration settings.
-   - Ensure all network interfaces are available and configured for MPTCP use.
+2. **OpenMPTCP Configuration:**
+   - Enable MPTCP capabilities in the network configuration settings.
+   - Ensure all network interfaces are available and configured for use with OpenMPTCP.
 
 ### GPS Application Development
 
@@ -96,8 +121,8 @@ This document details the design for an embedded system project utilizing MultiP
    - Develop a script in Python or C to capture the GPS position data.
 
 2. **MPTCP Data Transmission:**
-   - Implement an MPTCP client to send GPS data to a remote server.
-   - Use MPTCP sockets to manage multiple network connections effectively.
+   - Implement a client application using OpenMPTCP to send GPS data to a remote server.
+   - Use MPTCP sockets to efficiently handle multiple network connections.
 
 ### Data Transmission via MPTCP
 
